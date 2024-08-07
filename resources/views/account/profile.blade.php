@@ -54,7 +54,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="name" class="form-label">Image</label>
-                                <input type="file" name="image" id="image" class="form-control @error('image') is-invalid @enderror">
+                                <input type="file" name="image" id="image" accept=".jpg, .jpeg, .png" class="form-control @error('image') is-invalid @enderror">
                                 @if (!empty($user->image))
                                     <img src="{{ asset('uploads/profile/thumb/'.$user->image) }}" class="img-fluid mt-4" alt="Luna John" >    
                                 @endif

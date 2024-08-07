@@ -72,7 +72,7 @@ class AccountController extends Controller
         ];
 
         if(!empty($request->image)){
-            $rules['image'] = 'image';
+            $rules['image'] = 'image|mimes:jpeg,png|max:1048';
         }
 
         $validator = Validator::make($request->all(),$rules);
