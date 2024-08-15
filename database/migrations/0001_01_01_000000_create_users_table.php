@@ -13,29 +13,30 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
+            $table->string('name')->charset('utf8')->collation('utf8_unicode_ci');
+            $table->string('email', 191)->charset('utf8')->collation('utf8_unicode_ci')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->enum('role',['user','admin'])->default('user');
+            $table->string('password')->charset('utf8')->collation('utf8_unicode_ci');
+            $table->enum('role',['user','admin'])->default('user')->charset('utf8')->collation('utf8_unicode_ci');
             $table->rememberToken();
             $table->timestamps();
         });
-
+        
         Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('email')->primary();
-            $table->string('token');
+            $table->string('email', 191)->charset('utf8')->collation('utf8_unicode_ci')->primary();
+            $table->string('token', 191)->charset('utf8')->collation('utf8_unicode_ci');
             $table->timestamp('created_at')->nullable();
         });
-
+        
         Schema::create('sessions', function (Blueprint $table) {
-            $table->string('id')->primary();
+            $table->string('id', 191)->charset('utf8')->collation('utf8_unicode_ci')->primary();
             $table->foreignId('user_id')->nullable()->index();
-            $table->string('ip_address', 45)->nullable();
-            $table->text('user_agent')->nullable();
+            $table->string('ip_address', 45)->charset('utf8')->collation('utf8_unicode_ci')->nullable();
+            $table->text('user_agent')->charset('utf8')->collation('utf8_unicode_ci')->nullable();
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
+        
     }
 
     /**

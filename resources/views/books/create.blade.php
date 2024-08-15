@@ -59,7 +59,7 @@
                         <div class="mb-3">
                             <label for="author" class="form-label">Description</label>
                             <textarea name="description" id="description" class="form-control" placeholder="Description"
-                                cols="30" rows="5">{{ old('description') }}"</textarea>
+                                cols="30" rows="5">{{ old('description') }}</textarea>
                         </div>
 
                         <div class="mb-3">
