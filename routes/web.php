@@ -2,13 +2,14 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/',[HomeController::class,'index'])->name('home');
+Route::get('/book/{id}', [HomeController::class, 'detail'])->name('detail');
+Route::post('/save-review', [HomeController::class, 'saveReview'])->name('saveReview');
 
 Route::group(['prefix' => 'account'],function(){
     Route::group(['middleware' => 'guest'],function(){

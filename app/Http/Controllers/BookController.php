@@ -13,6 +13,7 @@ class BookController extends Controller
 {
     public function index(Request $request){
         $books = Book::orderby('created_at','DESC');
+       
 
         if(!empty($request->keyword)){
             $books->where('title','like','%'.$request->keyword.'%')->orWhere('author','like','%'.$request->keyword.'%');
