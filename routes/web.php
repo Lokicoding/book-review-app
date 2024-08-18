@@ -1,9 +1,11 @@
 <?php
 
-use App\Http\Controllers\AccountController;
+use App\Models\Review;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\HomeController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\AccountController;
 
 
 
@@ -30,5 +32,10 @@ Route::group(['prefix' => 'account'],function(){
         Route::get('books/edit/{id}',[BookController::class, 'edit'])->name('books.edit');
         Route::post('books/update/{id}',[BookController::class, 'update'])->name('books.update');
         Route::delete('books',[BookController::class, 'destroy'])->name('books.delete');
+
+        Route::get('reviews',[ReviewController::class,'index'])->name('account.reviews');
+        Route::get('reviews/{id}',[ReviewController::class,'edit'])->name('account.reviews.edit');
+        Route::post('reviews/{id}',[ReviewController::class,'update'])->name('account.reviews.update');
+        Route::delete('reviews',[ReviewController::class, 'destroy'])->name('reviews.delete');
     });
 });
