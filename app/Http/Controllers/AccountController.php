@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Review;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Intervention\Image\ImageManager;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Drivers\Gd\Driver;
-use Intervention\Image\ImageManager;
 
 class AccountController extends Controller
 {
@@ -109,6 +110,65 @@ class AccountController extends Controller
     public function logout(){
         Auth::logout();
         return redirect()->route('account.login');
+    }
+
+    public function myreviews(Request $request){
+        $myreviews = Review::where('user_id',Auth::user()->id)
+        ->with('book');
+        
+        if (!empty($request->keyword)) {
+            $keyword = $request->keyword;
+    
+            $myreviews->where(function($query) use ($keyword) {
+                $query->where('review', 'like', '%'.$keyword.'%')
+                      ->orWhereHas('book', function($q) use ($keyword) {
+                          $q->where('title', 'like', '%'.$keyword.'%');
+                      });
+            });
+        }
+
+        $myreviews = $myreviews->orderBy('created_at','DESC')->paginate(10); 
+
+        return view('account.my-reviews.my-reviews',[
+            'myreviews' => $myreviews
+        ]);
+    }
+
+    public function editReview($id){
+        $review = Review::where([
+            'id' => $id,
+            'user_id' => Auth::user()->id
+        ])->first();
+
+        return view('account.my-reviews.edit-myreview',['review'=>$review]);
+
+    }
+
+    public function updateReview(Request $request,$id){
+        $review = Review::findOrFail($id);
+
+        $validator = Validator::make($request->all(),[
+            'myreview' => 'required|min:10',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('account.my-reviews.editReview', $id)
+                             ->withInput()
+                             ->withErrors($validator);
+        }
+
+        if(!empty($review)){
+            $review->review = $request->myreview;
+            $review->rating = $request->rating;
+            $review->save();
+            
+            session()->flash('success','Review Update Successfully');
+            return redirect()->route('account.my-reviews');
+        }else{
+            session()->flash('error','Review Not Found');
+            return redirect()->route('account.my-reviews');
+        }
+
     }
 
 }

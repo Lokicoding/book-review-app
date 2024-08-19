@@ -25,6 +25,9 @@ Route::group(['prefix' => 'account'],function(){
         Route::get('profile',[AccountController::class,'profile'])->name('account.profile');        
         Route::get('logout',[AccountController::class,'logout'])->name('account.logout');        
         Route::post('profileUpdate',[AccountController::class,'profileUpdate'])->name('account.profileUpdate');        
+        Route::get('my-reviews',[AccountController::class,'myreviews'])->name('account.my-reviews');        
+        Route::get('my-reviews/{id}',[AccountController::class,'editReview'])->name('account.my-reviews.editReview');        
+        Route::post('my-reviews/{id}',[AccountController::class,'updateReview'])->name('account.my-reviews.updateReview');        
 
         Route::get('books',[BookController::class, 'index'])->name('books.index');
         Route::get('books/create',[BookController::class, 'create'])->name('books.create');
