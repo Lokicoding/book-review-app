@@ -19,7 +19,7 @@ class BookController extends Controller
             $books->where('title','like','%'.$request->keyword.'%')->orWhere('author','like','%'.$request->keyword.'%');
         }
 
-        $books = $books->paginate(5);
+        $books = $books->withCount('reviews')->withSum('reviews','rating')->paginate(5);
         return view('books.list',['books' => $books ]);
     }
 

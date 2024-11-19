@@ -16,10 +16,20 @@
                 </div>
                 <div class="col-md-8">
                     @include('layouts.message')
+
+                    @php
+                        if($book->reviews_count > 0){
+                            $avgRating = $book->reviews_sum_rating/$book->reviews_count;
+                        }else {
+                            $avgRating = 0;
+                        }    
+
+                        $avgRatingper = ($avgRating*100)/5;
+                    @endphp
                     <h3 class="h2 mb-3">{{ $book->title }}</h3>
                     <div class="h4 text-muted">{{ $book->author }}</div>
                     <div class="star-rating d-inline-flex ml-2" title="">
-                        <span class="rating-text theme-font theme-yellow">5.0</span>
+                        <span class="rating-text theme-font theme-yellow">{{number_format($avgRating)}}</span>
                         <div class="star-rating d-inline-flex mx-2" title="">
                             <div class="back-stars ">
                                 <i class="fa fa-star " aria-hidden="true"></i>
@@ -28,7 +38,7 @@
                                 <i class="fa fa-star" aria-hidden="true"></i>
                                 <i class="fa fa-star" aria-hidden="true"></i>
 
-                                <div class="front-stars" style="width: 100%">
+                                <div class="front-stars" style="width: {{$avgRatingper}}%">
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
                                     <i class="fa fa-star" aria-hidden="true"></i>
@@ -37,7 +47,7 @@
                                 </div>
                             </div>
                         </div>
-                        <span class="theme-font text-muted">(0 Review)</span>
+                        <span class="theme-font text-muted">({{($book->reviews_count >1) ? $book->reviews_count.'Reviews ' : $book->reviews_count.' Review ' }})</span>
                     </div>
 
                     <div class="content mt-3">
@@ -62,12 +72,20 @@
                                         @else
                                             <img src="{{ asset('uploads/books/dummy.png') }}" alt="{{ $relatedbook->title }}" class="card-img-top">    
                                         @endif
-                                        
+                                        @php
+                                            if($relatedbook->reviews_count > 0){
+                                                $avgRating = $relatedbook->reviews_sum_rating/$relatedbook->reviews_count;
+                                            }else {
+                                                $avgRating = 0;
+                                            }    
+
+                                            $avgRatingper = ($avgRating*100)/5;
+                                        @endphp
                                         <div class="card-body">
                                             <h3 class="h4 heading">{{ $relatedbook->title }}</h3>
                                             <p>by {{ $relatedbook->author }}</p>
                                             <div class="star-rating d-inline-flex ml-2" title="">
-                                                <span class="rating-text theme-font theme-yellow">0.0</span>
+                                                <span class="rating-text theme-font theme-yellow">{{number_format($avgRating)}}</span>
                                                 <div class="star-rating d-inline-flex mx-2" title="">
                                                     <div class="back-stars ">
                                                         <i class="fa fa-star " aria-hidden="true"></i>
@@ -76,7 +94,7 @@
                                                         <i class="fa fa-star" aria-hidden="true"></i>
                                                         <i class="fa fa-star" aria-hidden="true"></i>
                     
-                                                        <div class="front-stars" style="width: 70%">
+                                                        <div class="front-stars" style="width: {{$avgRatingper}}%">
                                                             <i class="fa fa-star" aria-hidden="true"></i>
                                                             <i class="fa fa-star" aria-hidden="true"></i>
                                                             <i class="fa fa-star" aria-hidden="true"></i>
@@ -85,7 +103,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <span class="theme-font text-muted">(0)</span>
+                                                <span class="theme-font text-muted">({{($relatedbook->reviews_count >1) ? $relatedbook->reviews_count.'Reviews ' : $relatedbook->reviews_count.' Review ' }})</span>
                                             </div>
                                         </div>
                                     </div>

@@ -46,7 +46,7 @@
                                                 <td>
                                                     <a href="{{route('account.my-reviews.editReview',$myreview->id)}}" class="btn btn-primary btn-sm"><i class="fa-regular fa-pen-to-square"></i>
                                                     </a>
-                                                    <a href="#" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></a>
+                                                    <a href="{{ route('reviews.delete') }}" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></a>
                                                 </td>
                                             </tr> 
                                         @endforeach                                        

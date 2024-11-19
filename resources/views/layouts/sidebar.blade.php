@@ -11,7 +11,7 @@
         </div>
         <div class="h5 text-center">
             <strong>{{ Auth::user()->name }}</strong>
-            <p class="h6 mt-2 text-muted">5 Reviews</p>
+            <p class="h6 mt-2 text-muted">{{(Auth::user()->reviews->count()) > 1 ? Auth::user()->reviews->count().' Reviews' : Auth::user()->reviews->count().' Review' }}</p>
         </div>
     </div>
 </div>

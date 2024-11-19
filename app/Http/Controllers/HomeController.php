@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 class HomeController extends Controller
 {
     public function index(Request $request){
-        $book = Book::orderby('created_at','DESC');
+        $book = Book::withCount('reviews')->withSum('reviews','rating')->orderby('created_at','DESC');
         
         if(!empty($request->keyword)){
             $book->where('title','like','%'.$request->keyword.'%')->orWhere('author','like','%'.$request->keyword.'%');
@@ -25,13 +25,13 @@ class HomeController extends Controller
     public function detail($id){
         $book = Book::with(['reviews.user','reviews' => function($query){
             $query->where('status',1); 
-        }])->findOrFail($id);
+        }])->withCount('reviews')->withSum('reviews','rating')->findOrFail($id);
         
         if($book->status == 0){
             abort(404);
         }
         
-        $relatedbooks = Book::where('status',1)->where('id','!=',$id)->take(3)->inRandomOrder()->get();
+        $relatedbooks = Book::where('status',1)->withCount('reviews')->withSum('reviews','rating')->where('id','!=',$id)->take(3)->inRandomOrder()->get();
         
         return view('book-details',[
             'book' => $book,
